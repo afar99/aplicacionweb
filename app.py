@@ -19,7 +19,7 @@ def login():
     if request.method == 'POST':
         # Obtén los datos del formulario de inicio de sesión
         username = request.form['username']
-        password = request.form['password']
+        password1 = request.form['password']
 
         # Conéctate a la base de datos
         connection = mysql.connector.connect(
@@ -32,7 +32,7 @@ def login():
         try:
             with connection.cursor(dictionary=True) as cursor:
                 # Ejecuta tu consulta SQL
-                sql = 'SELECT * FROM usuarios ' 
+                sql = 'SELECT * FROM usuarios' 
                 cursor.execute(sql)
                 result = cursor.fetchall()
         finally:
