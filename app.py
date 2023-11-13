@@ -29,23 +29,16 @@ def login():
             database=database,
             port=3306
         )
-
         try:
             with connection.cursor(dictionary=True) as cursor:
-                # Verifica las credenciales en la base de datos
-                sql = 'SELECT * FROM usuario WHERE usuario = %s AND contrasena = %s'
-                cursor.execute(sql, (username, password))
-                user_data = cursor.fetchone()
-
-                if user_data:
-                    # Inicio de sesión exitoso, guarda la información del usuario en la sesión
-                    session['user_id'] = user_data['id']
-                    return redirect(url_for('dashboard'))
-                else:
-                    # Credenciales incorrectas, redirige a la página de inicio de sesión
-                    return redirect(url_for('index'))
+                # Ejecuta tu consulta SQL
+                sql = 'SELECT * FROM usuario WHERE usuario = %s AND contrasena = %s' 
+                cursor.execute(sql)
+                result = cursor.fetchall()
         finally:
             connection.close()
+
+       
 
     return render_template('login.html')
 
