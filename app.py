@@ -32,9 +32,17 @@ def login():
         try:
             with connection.cursor(dictionary=True) as cursor:
                 # Ejecuta tu consulta SQL
-                sql = 'SELECT * FROM usuarios' 
-                cursor.execute(sql)
-                result = cursor.fetchall()
+                sql = 'SELECT * FROM usuarios WHERE username = %s AND password = %s'
+                cursor.execute(sql, (username, password))
+                user_data = cursor.fetchone()
+
+                if user_data:
+                    # Inicio de sesión exitoso, guarda la información del usuario en la sesión
+                    session['user_id'] = user_data['id']
+                    return redirect(url_for('login.html'))
+                else:
+                    # Credenciales incorrectas, redirige a la página de inicio de sesión
+                    return redirect(url_for('index.html'))
         finally:
             connection.close()
 
