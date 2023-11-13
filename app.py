@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 
 app = Flask(__name__)
@@ -8,6 +8,47 @@ host = 'basetesis.cexq7m1jqe1w.us-east-2.rds.amazonaws.com'
 user = 'admin'
 password = 'Tesis12345+'
 database = 'coladeras'
+
+@app.route('/loginpantalla', methods=['GET'])
+def iniciar_sesion():
+    # Devuelve los datos como HTML usando una plantilla
+    return render_template('login.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Obtén los datos del formulario de inicio de sesión
+        username = request.form['username']
+        password = request.form['password']
+
+        # Conéctate a la base de datos
+        connection = mysql.connector.connect(
+            user=user,
+            password=password,
+            host=host,
+            database=database,
+            port=3306
+        )
+
+        try:
+            with connection.cursor(dictionary=True) as cursor:
+                # Verifica las credenciales en la base de datos
+                sql = 'SELECT * FROM usuario WHERE usuario = %s AND contrasena = %s'
+                cursor.execute(sql, (username, password))
+                user_data = cursor.fetchone()
+
+                if user_data:
+                    # Inicio de sesión exitoso, guarda la información del usuario en la sesión
+                    session['user_id'] = user_data['id']
+                    return redirect(url_for('dashboard'))
+                else:
+                    # Credenciales incorrectas, redirige a la página de inicio de sesión
+                    return redirect(url_for('index'))
+        finally:
+            connection.close()
+
+    return render_template('login.html')
+
 
 @app.route('/obtener_datos', methods=['GET'])
 def obtener_datos():
