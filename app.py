@@ -25,7 +25,7 @@ def login():
         connection = mysql.connector.connect(
             user=user,
             password=password,
-            host=host,
+            host='basetesis.cexq7m1jqe1w.us-east-2.rds.amazonaws.com',
             database=database,
             port=3306
         )
