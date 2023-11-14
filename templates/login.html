@@ -14,7 +14,6 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            flex-direction: column;  /* Agregado para cambiar la dirección de la disposición a columna */
         }
 
         form {
@@ -22,7 +21,6 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 16px;  /* Agregado para agregar un espacio entre los formularios */
         }
 
         label {
@@ -51,13 +49,6 @@
             text-align: center;
             margin-top: 16px;
         }
-
-        .register-form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
     </style>
 </head>
 <body>
@@ -70,15 +61,6 @@
         <br>
         <button type="submit">Inicio Sesión</button>
     </form>
-
-    <div class="register-form">
-        <h2>Registro</h2>
-        <!-- Agrega aquí el formulario de registro -->
-        <form action="/registro" method="post">
-            <!-- Agrega campos de registro aquí -->
-            <button type="submit">Registrarse</button>
-        </form>
-    </div>
 
     <div class="register-link">
         <p>¿No tienes cuenta? <a href="/registro">Regístrate aquí</a></p>
