@@ -49,6 +49,7 @@ def login():
 def registro():
     if request.method == 'POST':
         # Obtén los datos del formulario de registro
+        numero_de_usuario = request.form['numero_de_usuario']
         username = request.form['username']
         password = request.form['password']
         nombre = request.form['nombre']
@@ -66,8 +67,8 @@ def registro():
         try:
             with connection.cursor(dictionary=True) as cursor:
                 # Inserta los datos en la tabla usuarios
-                sql = 'INSERT INTO usuarios (usuario, contrasena, nombre, correo) VALUES (%s, %s, %s, %s)'
-                cursor.execute(sql, (username, password, nombre, correo))
+                sql = 'INSERT INTO usuarios (numero_de_usuario, usuario, contrasena, nombre, correo) VALUES (%s, %s, %s, %s, %s)'
+                cursor.execute(sql, (numero_de_usuario, username, password, nombre, correo))
                 connection.commit()
 
                 # Redirige a la página de inicio de sesión después del registro exitoso
