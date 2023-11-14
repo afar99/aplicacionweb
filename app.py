@@ -36,7 +36,7 @@ def login():
                 if user_data:
                     # Inicio de sesión exitoso, guarda la información del usuario en la sesión
                    # session['user_id'] = user_data['id']
-                    return render_template('index.html')
+                    return redirect(url_for('obtener_datos'))
                 else:
                     # Credenciales incorrectas, redirige a la página de inicio de sesión
                       return render_template('login.html')
