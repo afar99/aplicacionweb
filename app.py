@@ -39,10 +39,10 @@ def login():
                 if user_data:
                     # Inicio de sesión exitoso, guarda la información del usuario en la sesión
                     session['user_id'] = user_data['id']
-                    return redirect(url_for('login.html'))
+                    return render_template('index.html')
                 else:
                     # Credenciales incorrectas, redirige a la página de inicio de sesión
-                    return redirect(url_for('index.html'))
+                      return render_template('login.html')
         finally:
             connection.close()
 
