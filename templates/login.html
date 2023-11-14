@@ -11,8 +11,9 @@
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column; /* Cambiado para una disposición en columna */
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end; /* Cambiado para alinear en la parte inferior */
             height: 100vh;
         }
 
@@ -21,7 +22,8 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 16px; /* Añadido para crear espacio entre el formulario y el enlace de registro */
+            margin-bottom: 16px;
+            width: 300px; /* Ancho del formulario ajustado */
         }
 
         label {
