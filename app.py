@@ -9,10 +9,7 @@ user = 'admin'
 password = 'Tesis12345+'
 database = 'coladeras'
 
-@app.route('/loginpantalla', methods=['GET'])
-def iniciar_sesion():
-    # Devuelve los datos como HTML usando una plantilla
-    return render_template('login.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -33,7 +30,7 @@ def login():
             with connection.cursor(dictionary=True) as cursor:
                 # Ejecuta tu consulta SQL
                 sql = 'SELECT * FROM usuarios WHERE usuario = %s AND contrasena = %s'
-                cursor.execute(sql, (username, password))
+                cursor.execute(sql, (username, password1))
                 user_data = cursor.fetchone()
 
                 if user_data:
