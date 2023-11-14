@@ -32,7 +32,7 @@ def login():
         try:
             with connection.cursor(dictionary=True) as cursor:
                 # Ejecuta tu consulta SQL
-                sql = 'SELECT * FROM usuarios WHERE username = %s AND password = %s'
+                sql = 'SELECT * FROM usuarios WHERE usuario = %s AND contrasena = %s'
                 cursor.execute(sql, (username, password))
                 user_data = cursor.fetchone()
 
