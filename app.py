@@ -3,6 +3,8 @@ import mysql.connector
 
 app = Flask(__name__)
 
+
+
 # Configura los detalles de tu base de datos RDS
 host = 'basetesis.cexq7m1jqe1w.us-east-2.rds.amazonaws.com'
 user = 'admin'
