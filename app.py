@@ -68,18 +68,16 @@ def obtener_datos_dynamo():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # ... (tu código actusd)
-
+    # ... (tu código actual)
 
 @app.route('/obtener_datos', methods=['GET'])
 def obtener_datos():
     # Obtener la imagen codificada en base64
     imagen_base64 = obtener_datos_dynamo()
 
-    # Pasar la imagen a la plantilla y renderizarla
+    # Pasar la imagen a la plantillasda y renderizarla
+    
     return render_template('index.html', imagen_base64=imagen_base64)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
-
