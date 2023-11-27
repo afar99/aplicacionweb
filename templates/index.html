@@ -8,6 +8,10 @@
 </head>
 <body>
     <h1>Datos de la Base de Datos</h1>
+    
+    <!-- Mostrar la imagen -->
+    <img src="data:image/png;base64, {{ imagen_base64 }}" alt="Gráfico de Monitoreo">
+
     <ul>
         {% for row in result %}
             <li>{{ row }}</li>
