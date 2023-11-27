@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-import mysql.connector
+from flask import Flask, render_template
 import boto3
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -42,10 +41,10 @@ def obtener_datos_dynamo():
     df = pd.DataFrame(data)
 
     # Convertir el valor Decimal a un tipo numérico
-    df['distancia'] = df['payload'].apply(lambda x: float(x['Distancia']) if isinstance(x['Distancia'], Decimal) else x['Distancia'])
+    df['distancia'] = df['payload'].apply(lambda x: float(x['Distancia']['N']))
 
     # Convertir 'mac_Id' a timestamp UNIX
-    df['fecha'] = pd.to_datetime(df['mac_Id'], unit='ms')  # 'ms' indica que el timestamp está en milisegundos
+    df['fecha'] = pd.to_datetime(df['mac_Id']['S'], unit='ms')  # 'ms' indica que el timestamp está en milisegundos
 
     # Filtrar los datos para tomar valores cada minuto o cuando la distancia supere los 30 cm
     df_filtered = df[(df['distancia'] > 30) | (df['fecha'].diff() >= pd.Timedelta(minutes=1))]
@@ -76,26 +75,9 @@ def obtener_datos():
     # Obtener la imagen codificada en base64
     imagen_base64 = obtener_datos_dynamo()
 
-    # Conéctate a la base de datos para obtener otros datos si es necesario
-    connection = mysql.connector.connect(
-        user=user,
-        password=password,
-        host=host,
-        database=database,
-        port=3306
-    )
-
-    try:
-        with connection.cursor(dictionary=True) as cursor:
-            # Ejecuta tu consulta SQL
-            sql = 'SELECT * FROM coladera'  # Reemplaza con el nombre real de tu tabla
-            cursor.execute(sql)
-            result = cursor.fetchall()
-    finally:
-        connection.close()
-
-    # Renderizar la plantilla con los resultados y la imagen
-    return render_template('index.html', result=result, imagen_base64=imagen_base64)
+    # Pasar la imagen a la plantilla y renderizarla
+    return render_template('index.html', imagen_base64=imagen_base64)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+    
