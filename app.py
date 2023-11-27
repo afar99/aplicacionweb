@@ -68,7 +68,8 @@ def obtener_datos_dynamo():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # ... (tu código actual)
+    # ... (tu código actusd)
+
 
 @app.route('/obtener_datos', methods=['GET'])
 def obtener_datos():
@@ -80,4 +81,5 @@ def obtener_datos():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-    
+
+
