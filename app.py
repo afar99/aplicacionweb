@@ -20,9 +20,9 @@ session = boto3.Session(
     region_name="us-east-2"
     )
 
-@app.route('/mostrar datos', methods=['GET', 'POST'])
+@app.route('/mostrardatos', methods=['GET'])
 def datos():
-    if request.method == 'POST':
+    if request.method == 'GET':
         # Llamar a la función con algún dato (puedes ajustar esto según tus necesidades)
         upload_dynamo(None)
 
