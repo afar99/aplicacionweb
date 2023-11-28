@@ -3,6 +3,7 @@ import mysql.connector
 import boto3
 import pandas as pd
 from gviz_api import DataTable  # Importa específicamente la clase DataTable desde gviz_api
+from decimal import Decimal
 
 app = Flask(__name__)
 
