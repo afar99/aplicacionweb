@@ -2,12 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 import boto3
 import pandas as pd
-import matplotlib.pyplot as plt
-from decimal import Decimal
+from gviz_api import gviz_api
 
 app = Flask(__name__)
-
-
 
 # Configura los detalles de tu base de datos RDS
 host = 'basetesis.cexq7m1jqe1w.us-east-2.rds.amazonaws.com'
@@ -18,13 +15,14 @@ session = boto3.Session(
     aws_access_key_id="AKIAXBJD2EULQEJYEKUL",
     aws_secret_access_key="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",
     region_name="us-east-2"
-    )
+)
 
 @app.route('/mostrardatos', methods=['GET'])
 def datos():
     if request.method == 'GET':
         # Llamar a la función con algún dato (puedes ajustar esto según tus necesidades)
         upload_dynamo(None)
+        return "Datos mostrados"  # Puedes cambiar este mensaje según lo que desees mostrar al usuario
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -50,18 +48,15 @@ def login():
 
                 if user_data:
                     # Inicio de sesión exitoso, guarda la información del usuario en la sesión
-                   # session['user_id'] = user_data['id']
+                    # session['user_id'] = user_data['id']
                     return redirect(url_for('obtener_datos'))
                 else:
                     # Credenciales incorrectas, redirige a la página de inicio de sesión
-                      return render_template('login.html')
+                    return render_template('login.html')
         finally:
             connection.close()
 
-       
-
     return render_template('login.html')
-
 
 @app.route('/obtener_datos', methods=['GET'])
 def obtener_datos():
@@ -85,9 +80,11 @@ def obtener_datos():
 
     # Devuelve los datos como HTML usando una plantilla
     return render_template('index.html', result=result)
-def upload_dynamo(data):
 
-    # Creamos una instancia del cliente DynamoDb
+def upload_dynamo(data):
+    # ... (código existente)
+
+    # Crear una instancia del cliente DynamoDb
     dynamodb = session.resource('dynamodb')
 
     # Nombre de la tabla
@@ -127,33 +124,59 @@ def upload_dynamo(data):
     for day, group in df_filtered.groupby(df_filtered['fecha'].dt.date):
         print(f"Fecha: {day}, Cantidad de registros: {len(group)}")
 
-        fig, ax = plt.subplots()
+        # Crear una gráfica de líneas para cada día con Google Charts
+        chart_html = generate_google_chart(group)
+        print(chart_html)
 
-        # Crear una gráfica de líneas para cada día
-        group.plot(x='fecha', y='distancia', marker='o', linestyle='-', legend=True, ax=ax)
+def generate_google_chart(df):
+    # Crear la descripción del gráfico para gviz_api
+    description = {"fecha": ("datetime", "Fecha"), "distancia": ("number", "Nivel del agua (cm)")}
 
-        # Establecer las etiquetas
-        ax.set_xlabel('Fecha')
-        ax.set_ylabel('Nivel del agua (cm)')
+    # Crear los datos para gviz_api
+    data = []
+    for _, row in df.iterrows():
+        data.append((row['fecha'], row['distancia']))
 
-        # Establecer el título de la tabla en el gráfico
-        ax.set_title(f"Día {day}")
+    # Crear el DataTable de gviz_api
+    data_table = gviz_api.DataTable(description)
+    data_table.LoadData(data)
 
-        # Configurar el rango del eje y sin incluir el 0
-        if not group['distancia'].empty:  # Verificar si la columna 'distancia' no está vacía
-            min_distancia_non_zero = group[group['distancia'] != 0]['distancia'].min()
-            max_distancia_non_zero = group[group['distancia'] != 0]['distancia'].max()
+    # Obtener el código JSON del DataTable
+    chart_json = data_table.ToJSon(columns_order=("fecha", "distancia"), order_by="fecha")
 
-            if not pd.isna(min_distancia_non_zero) and not pd.isna(max_distancia_non_zero):
-                ax.set_ylim(bottom=min_distancia_non_zero, top=max_distancia_non_zero)
+    # Crear el código HTML para el gráfico de Google Charts
+    chart_html = """
+    <html>
+      <head>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
 
-        # Mostrar la leyenda
-        ax.legend(title='Distancia')
+          function drawChart() {
+            var data = new google.visualization.DataTable({});
+            data.addColumn('datetime', 'Fecha');
+            data.addColumn('number', 'Nivel del agua (cm)');
+            data.addRows({});
+            
+            var options = {
+              title: 'Gráfico de Nivel del Agua',
+              curveType: 'function',
+              legend: { position: 'bottom' }
+            };
 
-        # Mostrar la gráfica
-        plt.show()
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          }
+        </script>
+      </head>
+      <body>
+        <div id="chart_div" style="width: 100%; height: 500px;"></div>
+      </body>
+    </html>
+    """.format(chart_json, chart_json)
 
+    return chart_html
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-
