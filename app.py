@@ -136,7 +136,7 @@ def generate_google_chart(df):
     # Crear los datos para gviz_api
     data = []
     for _, row in df.iterrows():
-        data.append({"fecha": row['fecha'], "distancia": row['distancia']})
+        data.append((row['fecha'], row['distancia']))
 
     # Crear el DataTable de gviz_api
     data_table = DataTable(description)
@@ -151,24 +151,24 @@ def generate_google_chart(df):
       <head>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
-          google.charts.load('current', {'packages':['corechart']});
+          google.charts.load('current', {{'packages':['corechart']}});
           google.charts.setOnLoadCallback(drawChart);
 
-          function drawChart() {
+          function drawChart() {{
             var data = new google.visualization.DataTable({});
             data.addColumn('datetime', 'Fecha');
             data.addColumn('number', 'Nivel del agua (cm)');
             data.addRows({});
             
-            var options = {
+            var options = {{
               title: 'Gráfico de Nivel del Agua',
               curveType: 'function',
-              legend: { position: 'bottom' }
-            };
+              legend: {{ position: 'bottom' }}
+            }};
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
             chart.draw(data, options);
-          }
+          }}
         </script>
       </head>
       <body>
