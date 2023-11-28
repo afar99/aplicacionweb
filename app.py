@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 import boto3
 import pandas as pd
-from gviz_api import gviz_api
+from gviz_api import DataTable  # Importa específicamente la clase DataTable desde gviz_api
 
 app = Flask(__name__)
 
@@ -138,7 +138,7 @@ def generate_google_chart(df):
         data.append((row['fecha'], row['distancia']))
 
     # Crear el DataTable de gviz_api
-    data_table = gviz_api.DataTable(description)
+    data_table = DataTable(description)
     data_table.LoadData(data)
 
     # Obtener el código JSON del DataTable
@@ -178,5 +178,4 @@ def generate_google_chart(df):
 
     return chart_html
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main
