@@ -136,7 +136,7 @@ def generate_google_chart(df):
     # Crear los datos para gviz_api
     data = []
     for _, row in df.iterrows():
-        data.append((row['fecha'], row['distancia']))
+        data.append({"fecha": row['fecha'], "distancia": row['distancia']})
 
     # Crear el DataTable de gviz_api
     data_table = DataTable(description)
