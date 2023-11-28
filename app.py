@@ -178,4 +178,5 @@ def generate_google_chart(df):
 
     return chart_html
 
-if __name__ == '__main
+if __name__ == '__main__':
+     app.run(host='0.0.0.0', port=5000)
