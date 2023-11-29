@@ -22,8 +22,8 @@ session = boto3.Session(
 def datos():
     if request.method == 'GET':
         # Llamar a la función con algún dato (puedes ajustar esto según tus necesidades)
-        upload_dynamo(None)
-        return "Datos mostrados"  # Puedes cambiar este mensaje según lo que desees mostrar al usuario
+        chart_html = upload_dynamo(None)
+        return render_template('chart.html', chart_html=chart_html)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -79,11 +79,8 @@ def obtener_datos():
     finally:
         connection.close()
 
-    # Utiliza la función generate_google_chart para obtener el código HTML del gráfico
-    chart_html = generate_google_chart(result)
-
-    # Devuelve los datos y el gráfico como HTML usando una plantilla
-    return render_template('index.html', result=result, chart_html=chart_html)
+    # Devuelve los datos como HTML usando una plantilla
+    return render_template('index.html', result=result)
 
 def upload_dynamo(data):
     # ... (código existente)
@@ -130,7 +127,7 @@ def upload_dynamo(data):
 
         # Crear una gráfica de líneas para cada día con Google Charts
         chart_html = generate_google_chart(group)
-        print(chart_html)
+        return chart_html  # Cambiamos para devolver el código HTML del gráfico
 
 def generate_google_chart(df):
     # Crear la descripción del gráfico para gviz_api
