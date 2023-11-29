@@ -2,9 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 import boto3
 import pandas as pd
-from google.visualization.data import DataTable
-from google.visualization.chart import LineChart
-from google.visualization.graph import PointSize
+import decimal
 
 app = Flask(__name__)
 
