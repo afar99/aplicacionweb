@@ -8,7 +8,7 @@ from google.visualization.graph import PointSize
 
 app = Flask(__name__)
 
-# Configura los detalles de tu base de datos RDS
+# Configura los detalles de tu base de datos RDs
 host = 'basetesis.cexq7m1jqe1w.us-east-2.rds.amazonaws.com'
 user = 'admin'
 password = 'Tesis12345+'
