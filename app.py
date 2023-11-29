@@ -2,8 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 import boto3
 import pandas as pd
-from gviz_api import DataTable
-from decimal import Decimal
+from google.visualization.data import DataTable
+from google.visualization.chart import LineChart
+from google.visualization.graph import PointSize
 
 app = Flask(__name__)
 
@@ -108,7 +109,7 @@ def upload_dynamo(data):
     print(df['payload'])
 
     # Convertir el valor Decimal a un tipo numérico
-    df['distancia'] = df['payload'].apply(lambda x: float(x['Distancia']) if isinstance(x['Distancia'], Decimal) else x['Distancia'])
+    df['distancia'] = df['payload'].apply(lambda x: float(x['Distancia']) if isinstance(x['Distancia'], decimal.Decimal) else x['Distancia'])
 
     # Imprimir el recuento de valores para la columna 'distancia'
     print("Recuento de valores para la columna 'distancia':")
