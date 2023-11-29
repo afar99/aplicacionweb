@@ -3,6 +3,7 @@ import mysql.connector
 import boto3
 import pandas as pd
 import decimal
+from google.visualization.data import DataTable
 
 app = Flask(__name__)
 
