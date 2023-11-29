@@ -79,8 +79,11 @@ def obtener_datos():
     finally:
         connection.close()
 
-    # Devuelve los datos como HTML usando una plantilla
-    return render_template('index.html', result=result)
+    # Utiliza la función generate_google_chart para obtener el código HTML del gráfico
+    chart_html = generate_google_chart(result)
+
+    # Devuelve los datos y el gráfico como HTML usando una plantilla
+    return render_template('index.html', result=result, chart_html=chart_html)
 
 def upload_dynamo(data):
     # ... (código existente)
