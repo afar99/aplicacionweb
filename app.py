@@ -144,7 +144,7 @@ def generate_google_chart(df):
     # Obtener el código JSON del DataTable
     chart_json = data_table.ToJSon(columns_order=("fecha", "distancia"), order_by="fecha")
 
-    # Crear el código HTML para el gráfico de Google Charts
+    # Crear el código HTML para el ráfico de Google Charts
     chart_html = """
     <html>
       <head>

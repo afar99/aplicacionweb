@@ -6,8 +6,29 @@
     <title>Gráfico</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-        // Aquí irá la función drawChart() que generará el gráfico
-        // Puedes incluir esta función en un bloque de script externo si lo prefieres
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('datetime', 'Fecha');
+            data.addColumn('number', 'Nivel del agua (cm)');
+            data.addRows([
+                // Aquí irán las filas de datos, puedes usar un bucle para recorrer tus datos
+                [new Date(2023, 11, 15, 0, 0, 0), 30],
+                [new Date(2023, 11, 15, 0, 1, 0), 35],
+                [new Date(2023, 11, 15, 0, 2, 0), 32],
+            ]);
+
+            var options = {
+                title: 'Gráfico de Nivel del Agua',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
     </script>
 </head>
 <body>
