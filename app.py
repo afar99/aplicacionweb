@@ -3,7 +3,8 @@ import mysql.connector
 import boto3
 import pandas as pd
 import decimal
-from google.visualization.data import DataTable
+from gviz_api import DataTable
+
 
 app = Flask(__name__)
 
