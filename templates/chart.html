@@ -11,7 +11,7 @@
 
         function drawChart() {
             // Aquí obtienes los datos de la plantilla
-            var payload_data = JSON.parse('{{ payload_data | tojson | safe }}');
+            var distance_counts = {{ distance_counts | default('null') | tojson | safe }};
             var distance_counts = JSON.parse('{{ distance_counts | tojson | safe }}');
 
             var data = new google.visualization.DataTable();
