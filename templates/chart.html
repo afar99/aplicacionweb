@@ -10,15 +10,18 @@
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
+            // Aquí obtienes los datos de la plantilla
+            var payload_data = JSON.parse('{{ payload_data | tojson | safe }}');
+            var distance_counts = JSON.parse('{{ distance_counts | tojson | safe }}');
+
             var data = new google.visualization.DataTable();
             data.addColumn('datetime', 'Fecha');
             data.addColumn('number', 'Nivel del agua (cm)');
-            data.addRows([
-                // Aquí irán las filas de datos, puedes usar un bucle para recorrer tus datos
-                [new Date(2023, 11, 15, 0, 0, 0), 30],
-                [new Date(2023, 11, 15, 0, 1, 0), 35],
-                [new Date(2023, 11, 15, 0, 2, 0), 32],
-            ]);
+
+            // Añade las filas de datos utilizando los valores obtenidos
+            payload_data.forEach(function(payload) {
+                data.addRow([new Date(payload.fecha), payload.distancia]);
+            });
 
             var options = {
                 title: 'Gráfico de Nivel del Agua',
@@ -34,5 +37,25 @@
 <body>
     <!-- Contenedor donde se mostrará el gráfico -->
     <div id="chart_div"></div>
+
+    <!-- Mostrar valores de la columna 'payload' -->
+    <div>
+        <h3>Valores de la columna 'payload'</h3>
+        <ul>
+            {% for payload_value in payload_data %}
+                <li>{{ payload_value }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Mostrar recuento de valores para la columna 'distancia' -->
+    <div>
+        <h3>Recuento de valores para la columna 'distancia'</h3>
+        <ul>
+            {% for distance_value, count in distance_counts.items() %}
+                <li>{{ distance_value }}: {{ count }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
