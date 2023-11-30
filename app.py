@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 import boto3
 import pandas as pd
-import decimal
 from google.visualization.data import DataTable
 
 app = Flask(__name__)
@@ -24,7 +23,6 @@ def datos():
         # Llamar a la función con algún dato (puedes ajustar esto según tus necesidades)
         chart_html, payload_data, distance_counts = upload_dynamo(None)
         return render_template('chart.html', distance_counts=distance_counts, chart_html=chart_html)
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
