@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var distance_counts = {{ distance_counts | default('null') | tojson | safe }};
+            if (distance_counts) {
+                var data = new google.visualization.DataTable();
+                data.addColumn('datetime', 'Fecha');
+                data.addColumn('number', 'Nivel del agua (cm)');
+
+                // Resto del código para agregar filas de datos
+
+                var options = {
+                    title: 'Gráfico de Nivel del Agua',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Contenedor donde se mostrará el gráfico -->
+    <div id="chart_div"></div>
+</body>
+</html>
