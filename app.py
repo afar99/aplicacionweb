@@ -7,7 +7,7 @@ from google.visualization.data import DataTable
 
 app = Flask(__name__)
 
-# Configura los detalles de tu base de datos RDs
+# Configura los detalles de tu base de datos RD
 host = 'basetesis.cexq7m1jqe1w.us-east-2.rds.amazonaws.com'
 user = 'admin'
 password = 'Tesis12345+'
