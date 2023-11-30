@@ -12,7 +12,7 @@
         function drawChart() {
             // Aquí obtienes los datos de la plantilla
             var distance_counts = {{ distance_counts | default('null') | tojson | safe }};
-            var distance_counts = JSON.parse('{{ distance_counts | tojson | safe }}');
+            var distance_counts = {{ distance_counts | default('null') | tojson | safe }};
 
             var data = new google.visualization.DataTable();
             data.addColumn('datetime', 'Fecha');
