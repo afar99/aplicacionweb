@@ -129,7 +129,9 @@ def upload_dynamo(data):
         # Crear una gráfica de líneas para cada día con Google Charts
         chart_html = generate_google_chart(group)
         chart_html = generate_google_chart(df_filtered)
-        return chart_html, df['payload'], df['distancia'].value_counts()  # Cambiamos para devolver el código HTML del gráfico
+        # Convertir la serie a un diccionario antes de devolverla
+        distance_counts_dict = df['distancia'].value_counts().to_dict()
+    return chart_html, df['payload'], df['distancia'].value_counts()  # Cambiamos para devolver el código HTML del gráfico
 
 def generate_google_chart(df):
     # Crear la descripción del gráfico para gviz_api
