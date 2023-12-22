@@ -6,7 +6,7 @@ import decimal
 from gviz_api import DataTable
 
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # Configura los detalles de tu base de datos RD
 host = 'basetesis.cexq7m1jqe1w.us-east-2.rds.amazonaws.com'
@@ -204,5 +204,5 @@ def generate_google_chart(df):
 
     return chart_html
 
-if _name_ == '_main_':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
