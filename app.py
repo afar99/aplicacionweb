@@ -183,7 +183,7 @@ def generate_google_chart(df):
             var data = new google.visualization.arrayToDataTable({});
             
             var options = {{
-              title: 'Gráfico de Nivel del Agua',
+              title: 'Gráfico de Nivel del Aguuuua',
               curveType: 'function',
               legend: {{ position: 'bottom' }}
             }};
