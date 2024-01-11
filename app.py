@@ -133,6 +133,7 @@ def upload_dynamo(data):
 
     # Imprimir información sobre los grupos
     print("Información sobre los grupos:")
+    chart_html = ""
     for day, group in df_filtered.groupby(df_filtered['fecha'].dt.date):
         # print(f"Fecha: {day}, Cantidad de registros: {len(group)}")
 
@@ -141,7 +142,11 @@ def upload_dynamo(data):
         chart_html = generate_google_chart(df_filtered)
         # Convertir la serie a un diccionario antes de devolverla
         distance_counts_dict = df['distancia'].value_counts().to_dict()
-    return chart_html, df['payload'], df['distancia'].value_counts()  # Cambiamos para devolver el código HTML del gráfico
+
+    if chart_html != "":
+        return chart_html, df['payload'], df['distancia'].value_counts()  # Cambiamos para devolver el código HTML del gráfico
+    else:
+        return None, None, None
 
 def generate_google_chart(df):
     # Crear la descripción del gráfico para gviz_api
@@ -157,9 +162,6 @@ def generate_google_chart(df):
         fecha = row['fecha'].strftime("%Y-%m-%d %H:%M:%S")
         element = [fecha, row['distancia']]
         data.append(element)
-
-    ## ordenar la data por fecha
-    data = sorted(data, key=lambda x: x[0])
 
     # Convertir la lista de datos en un DataFrame de pandas
     df_gviz = pd.DataFrame(data[1:], columns=data[0])
