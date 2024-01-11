@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, render_template_string, request, redirect, url_for, session
 import mysql.connector
 import boto3
 import pandas as pd
@@ -24,7 +24,17 @@ def datos():
     if request.method == 'GET':
         # Llamar a la función con algún dato (puedes ajustar esto según tus necesidades)
         chart_html, payload_data, distance_counts = upload_dynamo(None)
-        return render_template('chart.html', distance_counts=distance_counts, chart_html=chart_html)
+        try :
+            print("payload_data:")
+            print(payload_data)
+            print("distance_counts:")
+            print(distance_counts)
+            print("chart_html:")
+            print(chart_html)
+        
+        except:
+            print("error; no se pudo obtener payload_data")
+        return render_template_string(chart_html)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -124,7 +134,7 @@ def upload_dynamo(data):
     # Imprimir información sobre los grupos
     print("Información sobre los grupos:")
     for day, group in df_filtered.groupby(df_filtered['fecha'].dt.date):
-        print(f"Fecha: {day}, Cantidad de registros: {len(group)}")
+        # print(f"Fecha: {day}, Cantidad de registros: {len(group)}")
 
         # Crear una gráfica de líneas para cada día con Google Charts
         chart_html = generate_google_chart(group)
@@ -139,30 +149,38 @@ def generate_google_chart(df):
 
     # Crear los datos para gviz_api
     data = []
+    encabezado = ["Registro", "Nivel del agua (cm)"]
+    data.append(encabezado)
+
     for _, row in df.iterrows():
-        data.append({"fecha": row['fecha'], "distancia": row['distancia']})
+        # element ={row['fecha'], row['distancia']}
+        fecha = row['fecha'].strftime("%Y-%m-%d %H:%M:%S")
+        element = [fecha, row['distancia']]
+        data.append(element)
 
     # Crear el DataTable de gviz_api
-    data_table = DataTable(description)
-    data_table.LoadData(data)
+    # print("Creando DataTable de gviz_api...")
+    # data_table = DataTable(description)
+    # data_table.LoadData(data)
 
     # Obtener el código JSON del DataTable
-    chart_json = data_table.ToJSon(columns_order=("fecha", "distancia"), order_by="fecha")
+    # print("Obteniendo código JSON del DataTable...")
+    # # chart_json = data_table.ToJSon(columns_order=("fecha", "distancia"), order_by="fecha")
+    # print("chart_json obtenido")
 
     # Crear el código HTML para el ráfico de Google Charts
     chart_html = """
     <html>
       <head>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+        <title>Gráfico de Nivel del Agua</title>
         <script type="text/javascript">
           google.charts.load('current', {{'packages':['corechart']}});
           google.charts.setOnLoadCallback(drawChart);
 
           function drawChart() {{
-            var data = new google.visualization.DataTable({});
-            data.addColumn('datetime', 'Fecha');
-            data.addColumn('number', 'Nivel del agua (cm)');
-            data.addRows({});
+            var data = new google.visualization.arrayToDataTable({});
             
             var options = {{
               title: 'Gráfico de Nivel del Agua',
@@ -176,10 +194,13 @@ def generate_google_chart(df):
         </script>
       </head>
       <body>
-        <div id="chart_div" style="width: 100%; height: 500px;"></div>
+        <main class="container">
+            <h1>Gráfico de Nivel del Agua</h1>
+            <div id="chart_div" style="width: 100%; height: 500px;"></div>
+        </main>
       </body>
     </html>
-    """.format(chart_json, chart_json)
+    """.format(data)
 
     return chart_html
 
