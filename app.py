@@ -158,6 +158,19 @@ def generate_google_chart(df):
         element = [fecha, row['distancia']]
         data.append(element)
 
+    ## ordenar la data por fecha
+    data = sorted(data, key=lambda x: x[0])
+
+    # Convertir la lista de datos en un DataFrame de pandas
+    df_gviz = pd.DataFrame(data[1:], columns=data[0])
+
+    # Ordenar el DataFrame por la columna 'Registro' (fecha y hora)
+    df_gviz['Registro'] = pd.to_datetime(df_gviz['Registro'])
+    df_gviz = df_gviz.sort_values(by='Registro')
+
+    # Convertir el DataFrame ordenado de nuevo a una lista de datos
+    data = [list(df_gviz.columns)] + df_gviz.values.tolist()
+
     # Crear el DataTable de gviz_api
     # print("Creando DataTable de gviz_api...")
     # data_table = DataTable(description)
