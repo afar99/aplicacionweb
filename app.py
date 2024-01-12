@@ -127,23 +127,9 @@ def upload_dynamo(data):
 
     # Convertir 'mac_Id' a timestamp UNIX
     df['fecha'] = pd.to_datetime(df['mac_Id'], unit='ms')  # 'ms' indica que el timestamp está en milisegundos
-
-    # Filtrar los datos para tomar valores cada minuto o cuando la distancia supere los 30 cm
-    # df_filtered = df[(df['distancia'] > 30) | (df['fecha'].diff() >= pd.Timedelta(minutes=1))]
-
     # Obtener todos los registros ordenados por fecha
     df_filtered = df.sort_values(by=['fecha'])
-
-    # Imprimir información sobre los grupos
-    # print("Información sobre los grupos:")
-    # for day, group in df_filtered.groupby(df_filtered['fecha'].dt.date):
-        # print(f"Fecha: {day}, Cantidad de registros: {len(group)}")
-
-        # Crear una gráfica de líneas para cada día con Google Charts
-        # chart_html = generate_google_chart(group)
     chart_html = generate_google_chart(df_filtered)
-        # Convertir la serie a un diccionario antes de devolverla
-        # distance_counts_dict = df['distancia'].value_counts().to_dict()
     return chart_html, df['payload'], df['distancia'].value_counts()  # Cambiamos para devolver el código HTML del gráfico
 
 def generate_google_chart(df):
@@ -160,16 +146,6 @@ def generate_google_chart(df):
         fecha = row['fecha'].strftime("%Y-%m-%d %H:%M:%S")
         element = [fecha, row['distancia']]
         data.append(element)
-
-    # Crear el DataTable de gviz_api
-    # print("Creando DataTable de gviz_api...")
-    # data_table = DataTable(description)
-    # data_table.LoadData(data)
-
-    # Obtener el código JSON del DataTable
-    # print("Obteniendo código JSON del DataTable...")
-    # # chart_json = data_table.ToJSon(columns_order=("fecha", "distancia"), order_by="fecha")
-    # print("chart_json obtenido")
 
     # Crear el código HTML para el ráfico de Google Charts
     chart_html = """
