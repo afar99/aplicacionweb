@@ -194,11 +194,9 @@ def generate_google_chart(df):
         </script>
       </head>
       <body>
-        <main>
-        <article>
-        <header><h1>Gráfico de Nivel del Agua</h1></header>
+        <main class="container">
+       <h1>Gráfico de Nivel del Agua</h1>
         <div id="chart_div" style="width: 100%; height: 50vh"></div>
-        </article>
         </main>
       </body>
     </html>
