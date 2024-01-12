@@ -129,18 +129,18 @@ def upload_dynamo(data):
     df['fecha'] = pd.to_datetime(df['mac_Id'], unit='ms')  # 'ms' indica que el timestamp está en milisegundos
 
     # Filtrar los datos para tomar valores cada minuto o cuando la distancia supere los 30 cm
-    # df_filtered = df[(df['distancia'] > 30) | (df['fecha'].diff() >= pd.Timedelta(minutes=1))]
+    df_filtered = df[(df['distancia'] > 30) | (df['fecha'].diff() >= pd.Timedelta(minutes=1))]
 
     # Imprimir información sobre los grupos
-    print("Información sobre los grupos:")
-    for day, group in df_filtered.groupby(df_filtered['fecha'].dt.date):
+    # print("Información sobre los grupos:")
+    # for day, group in df_filtered.groupby(df_filtered['fecha'].dt.date):
         # print(f"Fecha: {day}, Cantidad de registros: {len(group)}")
 
         # Crear una gráfica de líneas para cada día con Google Charts
-        chart_html = generate_google_chart(group)
-        chart_html = generate_google_chart(df_filtered)
+        # chart_html = generate_google_chart(group)
+    chart_html = generate_google_chart(df_filtered)
         # Convertir la serie a un diccionario antes de devolverla
-        distance_counts_dict = df['distancia'].value_counts().to_dict()
+        # distance_counts_dict = df['distancia'].value_counts().to_dict()
     return chart_html, df['payload'], df['distancia'].value_counts()  # Cambiamos para devolver el código HTML del gráfico
 
 def generate_google_chart(df):
