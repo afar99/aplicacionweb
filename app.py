@@ -129,7 +129,10 @@ def upload_dynamo(data):
     df['fecha'] = pd.to_datetime(df['mac_Id'], unit='ms')  # 'ms' indica que el timestamp está en milisegundos
 
     # Filtrar los datos para tomar valores cada minuto o cuando la distancia supere los 30 cm
-    df_filtered = df[(df['distancia'] > 30) | (df['fecha'].diff() >= pd.Timedelta(minutes=1))]
+    # df_filtered = df[(df['distancia'] > 30) | (df['fecha'].diff() >= pd.Timedelta(minutes=1))]
+
+    # Obtener todos los registros ordenados por fecha
+    df_filtered = df.sort_values(by=['fecha'])
 
     # Imprimir información sobre los grupos
     # print("Información sobre los grupos:")
