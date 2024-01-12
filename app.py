@@ -185,7 +185,7 @@ def generate_google_chart(df):
             var options = {{
               title: 'Gráfico de Nivel del Agua',
               curveType: 'function',
-              legend: {{ position: 'bottom', textStyle: {{fontSize: 78}} }}
+              legend: {{ position: 'bottom', textStyle: {{fontSize: 20}} }}
             }};
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
@@ -194,10 +194,10 @@ def generate_google_chart(df):
         </script>
       </head>
       <body>
-        <main class="container">
+        <main>
         <article>
         <header><h1>Gráfico de Nivel del Agua</h1></header>
-        <div id="chart_div" style="width: 100%; height: 500px;"></div>
+        <div id="chart_div" style="width: 100%; height: 50vh"></div>
         </article>
         </main>
       </body>
