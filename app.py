@@ -6,7 +6,7 @@ import decimal
 from gviz_api import DataTable
 
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # Configura los detalles de tu base de datos RD
 host = 'basetesis.cexq7m1jqe1w.us-east-2.rds.amazonaws.com'
